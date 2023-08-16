@@ -40,7 +40,7 @@ public class User implements Serializable {
 	// Indicar o nome que está sendo usado como chave estrangeira nessa tabela
 	@JsonIgnore
 	@OneToMany(mappedBy = "client")
-	private List<Order> orders = new ArrayList<>(); // Teste 2
+	private List<Order> orders = new ArrayList<>(); // Teste 3
 
 	public User() {
 		// TODO Auto-generated constructor stub
