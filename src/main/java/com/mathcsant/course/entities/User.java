@@ -26,7 +26,7 @@ public class User implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-
+	
 	@NotBlank(message = "Name not found/invalid")
 	private String name;
 	@Email
@@ -40,7 +40,7 @@ public class User implements Serializable {
 	// Indicar o nome que está sendo usado como chave estrangeira nessa tabela
 	@JsonIgnore
 	@OneToMany(mappedBy = "client")
-	private List<Order> orders = new ArrayList<>();
+	private List<Order> orders = new ArrayList<>(); // Teste
 
 	public User() {
 		// TODO Auto-generated constructor stub
