@@ -26,10 +26,12 @@ Hibernate para realizar o mapeamento objeto-relacional (ORM). O banco de dados e
 # Como executar o projeto
 
 ## Back end
-Pré-requisitos: Postman API e a Documentação da API
+Pré-requisitos: Postman API e a [Documentação da API](https://documenter.getpostman.com/view/25998646/2s9Y5R1Rma)
 
 # Autor
 
 Matheus Campanhola Santos
 
 https://www.linkedin.com/in/matheuscampanhola/
+
+Para obter mais detalhes, consulte a [Documentação da API](https://documenter.getpostman.com/view/25998646/2s9Y5R1Rma)
