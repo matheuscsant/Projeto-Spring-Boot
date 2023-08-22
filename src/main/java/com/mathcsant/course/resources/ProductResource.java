@@ -1,16 +1,26 @@
 package com.mathcsant.course.resources;
 
+import java.net.URI;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.mathcsant.course.entities.Product;
 import com.mathcsant.course.services.ProductService;
+
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping(value = "/products")
@@ -31,6 +41,43 @@ public class ProductResource {
 //		Product p = service.findById(id);
 //		return ResponseEntity.ok().body(p);
 		return ResponseEntity.ok().body(service.findById(id));
+	}
+
+	@PostMapping
+	public ResponseEntity<Object> createProduct(@Valid @RequestBody Product product, BindingResult result) {
+
+		if (result.hasErrors()) {
+			return ResponseEntity.badRequest().body(result.getAllErrors());
+		}
+
+		Product createdProduct = service.createProduct(product);
+
+		URI uri = ServletUriComponentsBuilder.fromCurrentContextPath().path("products/{id}")
+				.buildAndExpand(createdProduct.getId()).toUri();
+
+		return ResponseEntity.created(uri).body(createdProduct);
+	}
+
+	@PostMapping(value = "/createProducts")
+	public ResponseEntity<List<?>> createProducts(@RequestBody List<Product> products) {
+		List<Product> createdProducts = service.createProducts(products);
+		return ResponseEntity.status(HttpStatus.CREATED).body(createdProducts);
+	}
+
+	@PutMapping(value = "/{id}")
+	public ResponseEntity<Object> updateProduct(@PathVariable Long id, @Valid @RequestBody Product product,
+			BindingResult result) {
+		if (result.hasErrors()) {
+			return ResponseEntity.badRequest().body(result.getAllErrors());
+		}
+		Product updatedProduct = service.updateProduct(id, product);
+		return ResponseEntity.ok().body(updatedProduct);
+	}
+
+	@DeleteMapping(value = "/{id}")
+	public ResponseEntity<Product> deleteProduct(@PathVariable Long id) {
+		service.deleteProductById(id);
+		return ResponseEntity.noContent().build();
 	}
 
 }

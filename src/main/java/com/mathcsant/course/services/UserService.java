@@ -44,12 +44,12 @@ public class UserService {
 		}
 		User existingUser = repository.getReferenceById(id);
 
-		uodateUser(updatedUser, existingUser);
+		updateUser(updatedUser, existingUser);
 
 		return repository.save(existingUser);
 	}
 
-	private void uodateUser(User updatedUser, User existingUser) {
+	private void updateUser(User updatedUser, User existingUser) {
 		existingUser.setName(updatedUser.getName());
 		existingUser.setEmail(updatedUser.getEmail());
 		existingUser.setPhone(updatedUser.getPhone());

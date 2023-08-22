@@ -30,7 +30,7 @@ public class User implements Serializable {
 	@NotBlank(message = "Name not found/invalid")
 	private String name;
 	@Email
-	@NotBlank(message = "Email invalid")
+	@NotBlank(message = "Email not found/invalid")
 	private String email;
 	@NotBlank(message = "Phone not found/invalid")
 	private String phone;
