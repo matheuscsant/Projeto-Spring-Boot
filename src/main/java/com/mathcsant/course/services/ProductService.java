@@ -2,6 +2,7 @@ package com.mathcsant.course.services;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -11,6 +12,7 @@ import com.mathcsant.course.entities.Product;
 import com.mathcsant.course.repositories.ProductRepository;
 import com.mathcsant.course.services.exceptions.DataBaseException;
 import com.mathcsant.course.services.exceptions.ResourceNotFoundException;
+import com.mathcsant.course.utils.entities.updateEntities;
 
 @Service
 public class ProductService {
@@ -23,9 +25,8 @@ public class ProductService {
 	}
 
 	public Product findById(Long id) {
-//		Optional<Product> p = repository.findById(id);
-//		return p.get();
-		return repository.findById(id).orElse(null);
+		Optional<Product> p = repository.findById(id);
+		return p.orElseThrow(() -> new ResourceNotFoundException(id));
 	}
 
 	public Product createProduct(Product product) {
@@ -44,16 +45,9 @@ public class ProductService {
 		}
 		Product existingProduct = repository.getReferenceById(id);
 
-		updateProduct(updatedProduct, existingProduct);
+		updateEntities.updateProduct(updatedProduct, existingProduct);
 
 		return repository.save(existingProduct);
-	}
-
-	private void updateProduct(Product updatedProduct, Product existingProduct) {
-		existingProduct.setName(updatedProduct.getName());
-		existingProduct.setDescription(updatedProduct.getDescription());
-		existingProduct.setPrice(updatedProduct.getPrice());
-		existingProduct.setImgUrl(updatedProduct.getImgUrl());
 	}
 
 	public void deleteProductById(Long id) {

@@ -12,6 +12,7 @@ import com.mathcsant.course.entities.User;
 import com.mathcsant.course.repositories.UserRepository;
 import com.mathcsant.course.services.exceptions.DataBaseException;
 import com.mathcsant.course.services.exceptions.ResourceNotFoundException;
+import com.mathcsant.course.utils.entities.updateEntities;
 
 @Service
 public class UserService {
@@ -44,15 +45,9 @@ public class UserService {
 		}
 		User existingUser = repository.getReferenceById(id);
 
-		updateUser(updatedUser, existingUser);
+		updateEntities.updateUser(updatedUser, existingUser);
 
 		return repository.save(existingUser);
-	}
-
-	private void updateUser(User updatedUser, User existingUser) {
-		existingUser.setName(updatedUser.getName());
-		existingUser.setEmail(updatedUser.getEmail());
-		existingUser.setPhone(updatedUser.getPhone());
 	}
 
 	public void deleteUserById(Long id) {
