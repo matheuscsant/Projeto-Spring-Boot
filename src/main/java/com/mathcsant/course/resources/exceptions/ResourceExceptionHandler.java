@@ -11,6 +11,7 @@ import com.mathcsant.course.services.exceptions.DataBaseException;
 import com.mathcsant.course.services.exceptions.ResourceNotFoundException;
 
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.ConstraintViolationException;
 
 @ControllerAdvice
 public class ResourceExceptionHandler {
@@ -36,7 +37,17 @@ public class ResourceExceptionHandler {
 		// Meio alternativo de retornar o erro
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new StandardError(Instant.now(),
 				HttpStatus.BAD_REQUEST.value(), "DataBase error", e.getMessage(), request.getRequestURI()));
+	}
 
+	@ExceptionHandler(ConstraintViolationException.class)
+	public ResponseEntity<StandardError> handleValidationException(ConstraintViolationException e,
+			HttpServletRequest request) {
+
+		String error = "Validation Error";
+		HttpStatus status = HttpStatus.NOT_FOUND;
+		StandardError err = new StandardError(Instant.now(), status.value(), error, e.getMessage().toString(),
+				request.getRequestURI());
+		return ResponseEntity.status(status).body(err);
 	}
 
 }

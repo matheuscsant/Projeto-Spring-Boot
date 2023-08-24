@@ -68,8 +68,8 @@ public class UserResource {
 		return ResponseEntity.created(uri).body(createdUser);
 	}
 
-	@PostMapping(value = "/createusers")
-	public ResponseEntity<List<?>> createUsers(@RequestBody List<User> users) {
+	@PostMapping(value = "/create-users")
+	public ResponseEntity<List<?>> createUsers(@Valid @RequestBody List<User> users) {
 		// TODO Por ser lista deve ser feita uma validação de forma diferente
 		// Operações com apenas um dado pode se usar o Binding Result para controlar as
 		// validações

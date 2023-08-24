@@ -44,9 +44,7 @@ public class UserService {
 			throw new ResourceNotFoundException(id);
 		}
 		User existingUser = repository.getReferenceById(id);
-
 		updateEntities.updateUser(updatedUser, existingUser);
-
 		return repository.save(existingUser);
 	}
 

@@ -58,7 +58,7 @@ public class ProductResource {
 		return ResponseEntity.created(uri).body(createdProduct);
 	}
 
-	@PostMapping(value = "/createProducts")
+	@PostMapping(value = "/create-products")
 	public ResponseEntity<List<?>> createProducts(@RequestBody List<Product> products) {
 		List<Product> createdProducts = service.createProducts(products);
 		return ResponseEntity.status(HttpStatus.CREATED).body(createdProducts);
