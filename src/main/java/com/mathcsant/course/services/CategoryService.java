@@ -37,7 +37,13 @@ public class CategoryService {
 	}
 
 	public Category createCategory(Category category) {
-		return repository.save(category);
+		Category createdCategory = null;
+		try {
+			createdCategory = repository.save(category);
+		} catch (DataIntegrityViolationException e) {
+			throw new DataBaseException(e.getMessage());
+		}
+		return createdCategory;
 	}
 
 	public List<Category> createCategories(List<Category> categories) {

@@ -3,11 +3,13 @@ package com.mathcsant.course.services;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
+import com.mathcsant.course.entities.Category;
 import com.mathcsant.course.entities.Product;
 import com.mathcsant.course.repositories.CategoryRepository;
 import com.mathcsant.course.repositories.ProductRepository;
@@ -32,6 +34,11 @@ public class ProductService {
 		return p.orElseThrow(() -> new ResourceNotFoundException(id));
 	}
 
+	public Set<Category> findCategoriesAssociatedProduct(Long id) {
+		Optional<Product> p = productRepository.findById(id);
+		return p.orElseThrow(() -> new ResourceNotFoundException(id)).getCategories();
+	}
+
 	public Product createProduct(Product product) {
 		validateCategory(product);
 		return productRepository.save(product);
@@ -54,6 +61,18 @@ public class ProductService {
 		return productRepository.save(existingProduct);
 	}
 
+	public Product associateCategoryProduct(Long id, List<Long> categoriesIds) {
+		Product existingProduct = productRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(id));
+		categoriesIds.forEach(i -> {
+			if (!categoryRepository.existsById(i)) {
+				throw new ResourceNotFoundException(i);
+			}
+		});
+		List<Category> categories = categoryRepository.findAllById(categoriesIds);
+		existingProduct.getCategories().addAll(categories);
+		return productRepository.save(existingProduct);
+	}
+
 	public void deleteProductById(Long id) {
 		if (!productRepository.existsById(id)) {
 			throw new ResourceNotFoundException(id);
@@ -65,11 +84,23 @@ public class ProductService {
 		}
 	}
 
+	public Product disassociateCategoryProduct(Long productId, Long categoryId) {
+		Product existingProduct = productRepository.findById(productId)
+				.orElseThrow(() -> new ResourceNotFoundException(productId));
+		Category existingCategory = categoryRepository.findById(categoryId)
+				.orElseThrow(() -> new ResourceNotFoundException(categoryId));
+		if (!existingProduct.getCategories().contains(existingCategory)) {
+			throw new ResourceNotFoundException(categoryId);
+		}
+		existingProduct.getCategories().removeIf(c -> c.equals(existingCategory));
+		return productRepository.save(existingProduct);
+	}
+
 	private void validateCategory(Product product) {
 		if (!product.getCategories().isEmpty()) {
 			product.getCategories().forEach(c -> {
-				if (!categoryRepository.existsById(c.getId()) || 
-						!categoryRepository.getReferenceById(c.getId()).getName().equalsIgnoreCase(c.getName())) {
+				if (!categoryRepository.existsById(c.getId())
+						|| !categoryRepository.getReferenceById(c.getId()).getName().equalsIgnoreCase(c.getName())) {
 					throw new ResourceNotFoundException(c.getId());
 				}
 			});
