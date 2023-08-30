@@ -1,6 +1,7 @@
 package com.mathcsant.course.utils.entities;
 
 import com.mathcsant.course.entities.Category;
+import com.mathcsant.course.entities.Order;
 import com.mathcsant.course.entities.Product;
 import com.mathcsant.course.entities.User;
 
@@ -31,8 +32,7 @@ public class updateEntities {
 		existingProduct.setImgUrl(updatedProduct.getImgUrl());
 		existingProduct.getCategories().clear();
 		if (!updatedProduct.getCategories().isEmpty()) {
-			updatedProduct.getCategories().forEach(
-					c -> existingProduct.getCategories().add(c));
+			updatedProduct.getCategories().forEach(c -> existingProduct.getCategories().add(c));
 		}
 	}
 
@@ -44,5 +44,16 @@ public class updateEntities {
 	 */
 	public static void updateCategory(Category updatedCategory, Category existingCategory) {
 		existingCategory.setName(updatedCategory.getName());
+	}
+
+	/**
+	 * Update a order existing
+	 * 
+	 * @param updatedOrder
+	 * @param existingOrder
+	 */
+	public static void updateOrder(Order updatedOrder, Order existingOrder) {
+		existingOrder.setOrderStatus(updatedOrder.getOrderStatus());
+		existingOrder.setPayment(updatedOrder.getPayment());
 	}
 }

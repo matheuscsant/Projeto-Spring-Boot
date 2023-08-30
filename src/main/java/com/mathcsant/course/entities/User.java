@@ -33,8 +33,6 @@ public class User implements Serializable {
 	@NotBlank(message = "Email not found/invalid")
 	private String email;
 	@NotBlank(message = "Phone not found/invalid")
-	// Proposta melhoria, criar um DTO e utilizar o @JsonSerialize para formata o
-	// telefone em (XX) XXXXX-XXXX
 	private String phone;
 	@NotBlank(message = "Password not found/invalid")
 	private String password;
