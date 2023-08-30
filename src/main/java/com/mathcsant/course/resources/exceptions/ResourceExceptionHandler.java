@@ -44,7 +44,7 @@ public class ResourceExceptionHandler {
 			HttpServletRequest request) {
 
 		String error = "Validation Error";
-		HttpStatus status = HttpStatus.NOT_FOUND;
+		HttpStatus status = HttpStatus.BAD_REQUEST;
 		StandardError err = new StandardError(Instant.now(), status.value(), error, e.getMessage().toString(),
 				request.getRequestURI());
 		return ResponseEntity.status(status).body(err);
