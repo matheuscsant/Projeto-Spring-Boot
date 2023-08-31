@@ -99,8 +99,7 @@ public class ProductService {
 	private void validateCategory(Product product) {
 		if (!product.getCategories().isEmpty()) {
 			product.getCategories().forEach(c -> {
-				if (!categoryRepository.existsById(c.getId())
-						|| !categoryRepository.getReferenceById(c.getId()).getName().equalsIgnoreCase(c.getName())) {
+				if (!categoryRepository.existsById(c.getId())) {
 					throw new ResourceNotFoundException(c.getId());
 				}
 			});
